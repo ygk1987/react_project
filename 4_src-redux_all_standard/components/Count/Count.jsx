@@ -1,18 +1,17 @@
-/*该文件是Count的UI组件
-		1.UI的外补应该包裹一个容器组件，他们是父子关系。
-		2.UI组件中不能使用任何redux的api。
-		3.会通过props接到容器组件传过来的：状态、操作状态的方法。 
-*/
-
 import React, { Component } from 'react'
+import store from '../../redux/store'
+import {
+  createIncrementAction,
+  createDecrementAction
+} from '../../redux/actions/count'
 
 export default class Count extends Component {
   //加
 	increment = ()=>{
-    //1.获取用户的输入
+    //获取用户的输入
     const {value} = this.refs.user_selected
-    //2.父容器将react-redux库中connect函数第一次调用的参数通过props传递给UI组件
-    this.props.increment(value*1)
+    //2."通知"redux 加 value
+    store.dispatch(createIncrementAction(value*1))
   }
 
   //减
@@ -20,7 +19,7 @@ export default class Count extends Component {
     //获取用户的输入
     const {value} = this.refs.user_selected
     //2."通知"redux 加 value
-    this.props.decrement(value*1)
+    store.dispatch(createDecrementAction(value*1))
   }
 
   //当前的和是奇数再加
@@ -28,28 +27,28 @@ export default class Count extends Component {
     //获取用户的输入
     const {value} = this.refs.user_selected
     //2.获取现在的和
-		const {count} = this.props
+		let count = store.getState()
     //判断
     if(count % 2 === 1){
-      //3.父容器将react-redux库中connect函数第一次调用的参数通过props传递给UI组件
-      this.props.increment(value*1)
+      //3."通知"redux 加 value
+      store.dispatch(createIncrementAction(value*1))
     } 
   }
 
   //等500毫秒再加
 	incrementAsync = ()=>{
-    //1.获取用户的输入
+    //获取用户的输入
     const {value} = this.refs.user_selected
     setTimeout(() => {
-      //2.父容器将react-redux库中connect函数第一次调用的参数通过props传递给UI组件
-      this.props.increment(value*1)
+       //2."通知"redux 加 value
+       store.dispatch(createIncrementAction(value*1))
     }, 500);
   }
 
   render() {
     return (
       <div>
-				<h1>当前求和为：{this.props.count}</h1>
+				<h1>当前求和为：{store.getState()}</h1>
 				<select ref="user_selected">
 					<option value="1">1</option>
 					<option value="2">2</option>
