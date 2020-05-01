@@ -11,7 +11,7 @@ import {message as msg} from 'antd'
 import qs from 'querystring' //将对象转换为urlencoded格式
 
 //配置请求的基础路径,React脚手架中可以为空,请求时自动看服务器当前所在的url地址
-axios.defaults.baseURL = ''
+axios.defaults.baseURL = '/api'
 //配置超时时间
 axios.defaults.timeout = 2000
 
