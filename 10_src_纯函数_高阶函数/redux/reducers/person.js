@@ -16,7 +16,8 @@ export default function (preState=initState, action) {
       newState = [data, ...preState]
       //注意:不要用下面的方法,因为这样写reducer就不是纯函数了
       /* preState.unshift(data)
-      newState =[...preState]
+      newState = preState //特别注意,这里的地址引用且该地址没有发生任何变化,所以导致页面不会有任何变化
+      newState =[...preState] //大坑: 断开引用才可以正常的显示
       console.log(newState); */
       return newState
     default:
