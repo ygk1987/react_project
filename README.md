@@ -13,8 +13,8 @@
 ```
 2.redux_完整非标准版
 ```shell
-	1.action_types.js文件，用于定义type的常量。
-	2.count_action_creator.js，用于创建和count相关的action。
+1.action_types.js文件，用于定义type的常量。
+2.count_action_creator.js，用于创建和count相关的action。
 ```
 3.redux_完整标准版
 ```shell
@@ -84,9 +84,9 @@
     
   2.高阶函数
     1)理解:一类特别的函数
-			a.情况1: 参数是函数
-			b.情况2: 返回是函数
-			c.备注：情况1和情况2满足一个即可
+	a.情况1: 参数是函数
+	b.情况2: 返回是函数
+	c.备注：情况1和情况2满足一个即可
     2)常见的高阶函数: 
         a.定时器设置函数
         b.数组的forEach()/map()/filter()/reduce()/find()
