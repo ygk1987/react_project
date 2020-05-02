@@ -4,6 +4,7 @@
 		3.会通过props接到容器组件传过来的：状态、操作状态的方法。
 */
 import React, { Component } from 'react'
+
 export default class Count extends Component {
   //加
   increment = ()=>{
@@ -36,16 +37,18 @@ export default class Count extends Component {
   incrementAsync = ()=>{
     //获取用户的输入
     const {value} = this.refs.user_selected
-    setTimeout(() => {
+    this.props.incrementAsync(value*1, 500)
+    // setTimeout(() => {
       //2."通知"redux 加 value
-      this.props.increment(value*1)
-    }, 500);
+    //   this.props.increment(value*1)
+    // }, 500);
   }
 
   render() {
+    const {count} = this.props
     return (
       <div>
-        <h1>当前求和为：{this.props.count}</h1>
+        <h1>当前求和为：{count}</h1>
 				<select ref="user_selected">
 					<option value="1">1</option>
 					<option value="2">2</option>

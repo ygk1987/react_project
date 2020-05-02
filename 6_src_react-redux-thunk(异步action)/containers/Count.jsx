@@ -12,10 +12,7 @@ import {connect} from 'react-redux'
 import {increment, decrement,incrementAsync} from '../redux/actions/count'
 
 export default connect(
-  state =>({
-    count: state.number,
-    personCount: state.persons.length
-  }), //映射状态数据,state是redux中保存的【总】状态。
+  state => ()=>({count: state}), //映射状态数据
   //精简的写法：因为connect函数底层有判断，若第二个参数是对象，会加工成一个函数
   {increment, decrement, incrementAsync}
 )(Count)
