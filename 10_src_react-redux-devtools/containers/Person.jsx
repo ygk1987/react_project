@@ -1,7 +1,14 @@
+//1.引入react核心库
 import React, { Component } from 'react'
+//2.引入connect方法(重点)
+import {connect} from 'react-redux'
+//3.引入person的action
+import {addPerson} from '../redux/actions/person'
+//4.引入uuid生成person的id
 import {v4 as uuidv4} from 'uuid'
 
-export default class Person extends Component {
+//5.Person的UI组件
+class Person extends Component {
   add = ()=>{
     //1.获取用户输入
     const {nameNode, ageNode} = this.refs
@@ -38,3 +45,12 @@ export default class Person extends Component {
     )
   }
 }
+
+//6.暴露Person的容器组件
+export default connect(
+  state => ({//映射状态,
+    persons: state.persons,
+    count: state.number
+  }),
+  {addPerson}//映射间接操作状态的方法
+)(Person)

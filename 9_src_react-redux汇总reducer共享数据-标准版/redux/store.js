@@ -7,8 +7,6 @@ import {createStore,applyMiddleware} from 'redux'
 import allReducer from './reducers'
 //引入redux-thunk用于支持异步action
 import thunk from 'redux-thunk'
-//引入composeWithDevTools
-import {composeWithDevTools} from 'redux-devtools-extension'
 
 //创建store,同时指定好为store所服务的reducer,随后暴露
-export default createStore(allReducer, composeWithDevTools(applyMiddleware(thunk)))
+export default createStore(allReducer, applyMiddleware(thunk))
