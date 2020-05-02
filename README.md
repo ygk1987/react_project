@@ -3,7 +3,7 @@
 ### 1-redux学习
 1. redux_mini版
 ```shell
-	1.store是createStore创建的
+  1.store是createStore创建的
   2.store创建的时候就指定好了reducer
   3.reducer是一个函数
   4.精简的写法其实也可以不用actionCreator,直接写在对应的UI组件中
