@@ -13,8 +13,8 @@
 ```
 2.redux_完整非标准版
 ```shell
-	1.action_types.js文件，用于定义type的常量。
-	2.count_action_creator.js，用于创建和count相关的action。
+ 1.action_types.js文件，用于定义type的常量。
+ 2.count_action_creator.js，用于创建和count相关的action。
 ```
 3.redux_完整标准版
 ```shell
