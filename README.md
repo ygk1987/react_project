@@ -92,7 +92,7 @@
         b.数组的forEach()/map()/filter()/reduce()/find()
         c.函数对象的bind()
         d.Promise() / then()
-        e.antd中的Form.create()()
+        e.antd中的Form.create()()--已经废弃
         f.react-router-dom中的withRouter
         g.react-redux中的connect()
     3)作用: 
