@@ -24,6 +24,7 @@ export default class Login extends Component {
 		if(status === 0){
 			message.success('登录成功!', 1)
 			console.log(data);
+			this.props.history.replace('/admin') //跳转到admin组件
 		}else{
 			message.error(msg)
 		}
