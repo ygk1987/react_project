@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { Form, Input, Button,message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import {connect} from 'react-redux'
+
+import {saveUserInfo} from '@/redux/actions/login'
+
 
 import {reqLogin} from '@/api'
 import logo from './images/logo.png'
@@ -14,7 +18,7 @@ const {Item} = Form
     2.统一返回真正的数据data,而不是axios包装的那个response对象
   */
  
-export default class Login extends Component {
+class Login extends Component {
   //表单提交并且验证通过的回调
   onFinish = async values => {
 		//此处只处理成功响应的请求数据,失败的已经在拦截器里处理了
@@ -23,7 +27,7 @@ export default class Login extends Component {
 		const {status, data, msg} = result;
 		if(status === 0){
 			message.success('登录成功!', 1)
-			console.log(data);
+			this.props.saveUserInfo(data);
 			this.props.history.replace('/admin') //跳转到admin组件
 		}else{
 			message.error(msg)
@@ -102,3 +106,8 @@ export default class Login extends Component {
     )
   }
 }
+
+export default connect(
+	()=>({}), //映射状态
+	{saveUserInfo} //映射操作状态的方法
+)(Login)
