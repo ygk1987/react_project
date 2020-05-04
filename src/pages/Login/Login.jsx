@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button,message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import {reqLogin} from '@/api'
@@ -19,7 +19,14 @@ export default class Login extends Component {
   onFinish = async values => {
 		//此处只处理成功响应的请求数据,失败的已经在拦截器里处理了
 	 	let result = await reqLogin(values)
-		console.log(result.data);
+		// console.log(result.data);
+		const {status, data, msg} = result;
+		if(status === 0){
+			message.success('登录成功!', 1)
+			console.log(data);
+		}else{
+			message.error(msg)
+		}
   };
 
   //自定义密码验证器

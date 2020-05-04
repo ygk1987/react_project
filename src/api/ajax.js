@@ -9,6 +9,8 @@
 import axios from 'axios'
 import {message as msg} from 'antd'
 import qs from 'querystring' //将对象转换为urlencoded格式
+import nprogress from 'nprogress' //引入nprogress制作进度条
+import 'nprogress/nprogress.css'
 
 //配置请求的基础路径,React脚手架中可以为空,请求时自动看服务器当前所在的url地址
 axios.defaults.baseURL = '/api'
@@ -17,6 +19,7 @@ axios.defaults.timeout = 2000
 
 //请求拦截器
 axios.interceptors.request.use((config)=>{
+  nprogress.start()
   const {method, data} = config
   //统一处理post请求json编码问题(转换为urlencoded)
   if(method.toLowerCase() === 'post' && data instanceof Object){
@@ -29,10 +32,12 @@ axios.interceptors.request.use((config)=>{
 axios.interceptors.response.use(
   //成功的回调:返回的http状态码是2开头的
   response => {
+    nprogress.done()
     return response.data
   },
   //失败的回调:1.返回的http状态码不是2开头,2.达到了超时时间,3.网络不通
   err => {
+    nprogress.done()
     //注意,要给默认值,统一响应已知错误类型外的错误提示
     let errmsg = '未知错误,请联系管理员'
     const {message} = err
