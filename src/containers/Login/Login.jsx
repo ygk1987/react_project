@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Form, Input, Button,message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 
 import {saveUserInfo} from '@/redux/actions/login'
 
@@ -27,8 +28,9 @@ class Login extends Component {
 		const {status, data, msg} = result;
 		if(status === 0){
 			message.success('登录成功!', 1)
+			//如果登录成功,就向redux和localStorage中保存用户信息
 			this.props.saveUserInfo(data);
-			this.props.history.replace('/admin') //跳转到admin组件
+			// this.props.history.replace('/admin') //跳转到admin组件
 		}else{
 			message.error(msg)
 		}
@@ -48,7 +50,13 @@ class Login extends Component {
     else return Promise.resolve()
   }
 
+	/*注意:
+		1.this.props.history适用于在非render函数中跳转
+		2.<Redirect>适用于在render函数中做跳转
+	*/
   render() {
+		//如果登录成功,直接跳转到admin组件
+		if(this.props.isLogin) return <Redirect to="/admin"/>
     return (
       <div className="login">
         <header>
@@ -108,6 +116,6 @@ class Login extends Component {
 }
 
 export default connect(
-	()=>({}), //映射状态
+	state =>({isLogin:state.userInfo.isLogin}), //映射状态
 	{saveUserInfo} //映射操作状态的方法
 )(Login)
