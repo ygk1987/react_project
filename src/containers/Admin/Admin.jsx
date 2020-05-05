@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import Check from '@/containers/Hoc/Check'
 import { Layout } from 'antd';
 import Header from './Header/Header'
+import LeftNav from './LeftNav/LeftNav'
 import './css/admin.less'
 
 const {Footer, Sider, Content } = Layout;
@@ -25,7 +26,9 @@ class Admin extends Component {
     // if(!this.props.isLogin) return <Redirect to="/login"/>
     return (
       <Layout className="admin-container">
-        <Sider>Sider</Sider>
+        <Sider>
+          <LeftNav/>
+        </Sider>
         <Layout className="admin-container">
           <Header/>
           <Content>Content</Content>
