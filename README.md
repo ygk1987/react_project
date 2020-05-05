@@ -61,7 +61,7 @@
 ## day06-做了什么?
 ```shell
 1.Header组件展示用户名
-2.装饰器语法（讲解代码在App.js中）
+2.装饰器语法(解决:IDE报错、编译报错)-(讲解在App.js中)
     第一步：yarn add @babel/plugin-proposal-decorators 用于解析装饰器语法。
     第二步：在config-overrides.js，追加一个loader,addDecoratorsLegacy。
     第三步：在jsconfig.json中，追加一个配置："experimentalDecorators":true。
