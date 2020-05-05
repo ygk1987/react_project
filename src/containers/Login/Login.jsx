@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { Form, Input, Button,message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {connect} from 'react-redux'
-import {Redirect} from 'react-router-dom'
+// import {Redirect} from 'react-router-dom'
+import Check from '@/containers/Hoc/Check'
 
 import {saveUserInfo} from '@/redux/actions/login'
 
@@ -22,6 +23,7 @@ const {Item} = Form
 	state =>({isLogin:state.userInfo.isLogin}), //映射状态
 	{saveUserInfo} //映射操作状态的方法
 )
+@Check
 class Login extends Component {
   //表单提交并且验证通过的回调
   onFinish = async values => {
@@ -59,7 +61,7 @@ class Login extends Component {
 	*/
   render() {
 		//如果登录成功,直接跳转到admin组件
-		if(this.props.isLogin) return <Redirect to="/admin"/>
+		// if(this.props.isLogin) return <Redirect to="/admin"/>
     return (
       <div className="login">
         <header>
