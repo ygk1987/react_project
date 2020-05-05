@@ -58,5 +58,23 @@
         (1)如果没有登录,直接跳转到登录login组件
         (2)如果登录成功,直接跳转到admin组件
 ```
-
-
+## day06-做了什么?
+```shell
+1.Header组件展示用户名
+2.装饰器语法（讲解代码在App.js中）
+    第一步：yarn add @babel/plugin-proposal-decorators 用于解析装饰器语法。
+    第二步：在config-overrides.js，追加一个loader,addDecoratorsLegacy。
+    第三步：在jsconfig.json中，追加一个配置："experimentalDecorators":true。
+3.将项目中的connect用装饰器语法去写。
+4.高阶函数 & 高阶组件
+5.自定义一个高阶组件，校验组件权限(对比vue中的路由守卫)
+6.LeftNav静态
+  坑:更新antd版本4.2.0解决菜单图片不显示问题
+7.LeftNav--Menu组件的分析
+8.自动生成菜单(递归子菜单)
+9.搭建Admin的二级路由
+10.天气异步请求
+    1.jsonp跨域请求
+    2.Promise处理异步任务
+    3.定义函数或者使用IIFE 避免在生命周期钩子函数前使用async关键字
+```
