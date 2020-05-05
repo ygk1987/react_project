@@ -18,7 +18,10 @@ const {Item} = Form
     1.判断程序员的请求,如果是post请求且参数形式为json,那么转换为urlencoded格式
     2.统一返回真正的数据data,而不是axios包装的那个response对象
   */
- 
+@connect(
+	state =>({isLogin:state.userInfo.isLogin}), //映射状态
+	{saveUserInfo} //映射操作状态的方法
+)
 class Login extends Component {
   //表单提交并且验证通过的回调
   onFinish = async values => {
@@ -115,7 +118,4 @@ class Login extends Component {
   }
 }
 
-export default connect(
-	state =>({isLogin:state.userInfo.isLogin}), //映射状态
-	{saveUserInfo} //映射操作状态的方法
-)(Login)
+export default Login

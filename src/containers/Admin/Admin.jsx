@@ -7,6 +7,12 @@ import './css/admin.less'
 
 const {Footer, Sider, Content } = Layout;
 
+@connect(
+  state =>({//映射状态
+    isLogin: state.userInfo.isLogin
+  }), 
+  {} //映射操作状态的方法
+)
 class Admin extends Component {
   logout = ()=>{
     //通知redux和local均删除之前保存的用户数据
@@ -28,10 +34,5 @@ class Admin extends Component {
   }
 }
 
-export default connect(
-  state =>({//映射状态
-    isLogin: state.userInfo.isLogin
-  }), 
-  {} //映射操作状态的方法
-)(Admin)
+export default Admin
 
