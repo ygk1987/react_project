@@ -3,23 +3,25 @@ import { Card,Button,Table } from 'antd';
 import {PlusCircleOutlined} from '@ant-design/icons';
 import {reqCategoryList} from '@/api'
 export default class Category extends Component {
-  async componentDidMount(){
-    let result = await reqCategoryList()
-    console.log(result);
-    
+  state = {
+    categoryList: []
   }
+
+  getCategoryList = async ()=>{
+    let result = await reqCategoryList()
+    const {status, data} = result
+    if(status === 0){
+      this.setState({categoryList: data})
+    }
+  }
+
+  componentDidMount(){
+    this.getCategoryList()
+  }
+
   render() {
     //表格的数据源
-    const dataSource = [
-      {
-        key: '1',
-        name: '测试分类0001',
-      },
-      {
-        key: '2',
-        name: '测试分类0002',
-      },
-    ];
+    const dataSource = this.state.categoryList
     //表格的列配置(特别重要)
     const columns = [
       {
@@ -42,7 +44,7 @@ export default class Category extends Component {
           dataSource={dataSource} //配置数据源
           columns={columns} //配置列
           bordered //展示边框
-          // rowKey="_id" //配置唯一标识
+          rowKey="_id" //配置唯一标识
           pagination={{ //分页器
             pageSize:4 //每页展示多少条
           }} 
