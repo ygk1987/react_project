@@ -56,7 +56,7 @@ class LeftNav extends Component {
     const checkedKey = openedKey.slice(-1) //要选中的菜单
     
     return (
-      <div className="left-nav"></div>
+      <div className="left-nav">
         <div className="nav-top">
           <img src={logo} alt=""/>
           <span>商品管理系统</span>
