@@ -3,24 +3,30 @@ import { Card,Button,Table } from 'antd';
 import {PlusCircleOutlined} from '@ant-design/icons';
 import {connect} from 'react-redux'
 
-import {reqCategoryList} from '@/api'
-import {saveCategory} from '@/redux/actions/category'
+// import {reqCategoryList} from '@/api'
+//同步action
+// import {saveCategory} from '@/redux/actions/category'
+//异步action
+import {saveCategoryAsync} from '@/redux/actions/category'
 
 
 @connect(
   state =>({categorylist: state.categorylist}), //映射操作状态
-  {saveCategory} //映射操作状态的方法
+  // {saveCategory} //映射操作状态的方法
+  {saveCategoryAsync}
 )
 class Category extends Component {
   getCategoryList = async ()=>{
-    let result = await reqCategoryList()
+    /*let result = await reqCategoryList()
     const {status, data} = result
-    if(status === 0){
+     if(status === 0){
+      //1.如果成功存入自身的state中
       //this.setState({categoryList: data})
-
-      //如果成功存入redux中数据共享
-      this.props.saveCategory(data)
-    }
+      //2.同步action处理,如果成功存入redux中数据共享
+      // this.props.saveCategory(data)
+    } */
+    //3.异步action处理
+    this.props.saveCategoryAsync()
   }
 
   componentDidMount(){
