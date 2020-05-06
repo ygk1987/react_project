@@ -11,6 +11,7 @@ import {message as msg} from 'antd'
 import qs from 'querystring' //将对象转换为urlencoded格式
 import nprogress from 'nprogress' //引入nprogress制作进度条
 import 'nprogress/nprogress.css'
+import store from '@/redux/store'
 
 //配置请求的基础路径,React脚手架中可以为空,请求时自动看服务器当前所在的url地址
 axios.defaults.baseURL = '/api'
@@ -25,6 +26,12 @@ axios.interceptors.request.use((config)=>{
   if(method.toLowerCase() === 'post' && data instanceof Object){
     config.data = qs.stringify(data)
   }
+  //如果存在token,那就携带token
+  const {token} = store.getState().userInfo
+  if(token){
+    config.headers.Authorization = 'atguigu_'+ token
+  }
+  //必须返回配置对象
   return config
 })
 

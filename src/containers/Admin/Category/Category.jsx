@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import { Card,Button,Table } from 'antd';
 import {PlusCircleOutlined} from '@ant-design/icons';
-
+import {reqCategoryList} from '@/api'
 export default class Category extends Component {
+  async componentDidMount(){
+    let result = await reqCategoryList()
+    console.log(result);
+    
+  }
   render() {
     //表格的数据源
     const dataSource = [
@@ -47,3 +52,5 @@ export default class Category extends Component {
     )
   }
 }
+
+

@@ -27,3 +27,6 @@ export const reqWeatherData = ()=>{
     })
   })
 }
+
+//请求分类列表
+export const reqCategoryList = () => ajax.get('/manage/category/list')
