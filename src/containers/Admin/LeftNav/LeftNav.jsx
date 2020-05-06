@@ -15,7 +15,6 @@ const { SubMenu,Item } = Menu;
 )
 @withRouter
 class LeftNav extends Component {
-
   saveTitle = (title)=>{
     console.log(title);
     this.props.saveTitle(title)
@@ -49,12 +48,42 @@ class LeftNav extends Component {
     })
   }
 
+  //计算title的方法
+  calculateTitle = ()=>{
+    //1.从路径中获取菜单的key
+    const {pathname} = this.props.location //路径字符串
+    let currentKey = pathname.split('/').slice(-1)[0] //当前的key
+    //解决第一次登录title计算不出来
+    if(currentKey === 'admin') currentKey = 'home'
+    //2.拿着key去menu-config中查找其所对应的菜单名字
+    let title =''
+    menus.forEach((menuObj)=>{
+      if(menuObj.children instanceof Array){
+        //如果有子菜单，就去子菜单中查找
+        let result = menuObj.children.find((childObj)=>{
+          return childObj.key === currentKey
+        })
+        if(result) title = result.title
+      }else{
+        //如果没有子菜单就在自身查找
+        if(menuObj.key === currentKey) title = menuObj.title
+      }
+    })
+    //直接保存到redux中
+    this.props.saveTitle(title)
+  }
+
+  componentDidMount(){
+    //根据路劲计算出菜单标题
+    this.calculateTitle()
+  }
+
   render() {
     //获取路径，无论是展开还是选中，都是从路径中获取的。
     const {pathname} = this.props.location
     const openedKey = pathname.split('/') //要展开的菜单
     const checkedKey = openedKey.slice(-1) //要选中的菜单
-    
+  
     return (
       <div className="left-nav">
         <div className="nav-top">
