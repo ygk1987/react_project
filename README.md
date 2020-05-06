@@ -64,7 +64,7 @@
 2.装饰器语法(解决:IDE报错、编译报错)-(讲解在App.js中)
     第一步：yarn add @babel/plugin-proposal-decorators 用于解析装饰器语法。
     第二步：在config-overrides.js，追加一个loader,addDecoratorsLegacy。
-    第三步：在jsconfig.json中，追加一个配置："experimentalDecorators":true。
+    第三步：在jsconfig.json中，追加一个配置："experimentalDecorators":true。如果没有`jsconfig.json`可以在设置中配置
 3.将项目中的connect用装饰器语法去写。
 4.高阶函数 & 高阶组件
 5.自定义一个高阶组件，校验组件权限(对比vue中的路由守卫)
