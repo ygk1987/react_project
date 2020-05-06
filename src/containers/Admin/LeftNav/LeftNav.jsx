@@ -10,7 +10,7 @@ import './css/left_nav.less'
 
 const { SubMenu,Item } = Menu;
 @connect(
-  ()=>{}, //映射状态
+  ()=>({}), //映射状态
   {saveTitle} //映射操作状态的方法
 )
 @withRouter
