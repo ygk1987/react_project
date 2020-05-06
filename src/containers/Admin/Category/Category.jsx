@@ -16,23 +16,9 @@ import {saveCategoryAsync} from '@/redux/actions/category'
   {saveCategoryAsync}
 )
 class Category extends Component {
-  getCategoryList = async ()=>{
-    /*let result = await reqCategoryList()
-    const {status, data} = result
-     if(status === 0){
-      //1.如果成功存入自身的state中
-      //this.setState({categoryList: data})
-      //2.同步action处理,如果成功存入redux中数据共享
-      // this.props.saveCategory(data)
-    } */
-    //3.异步action处理
+  componentDidMount(){
     this.props.saveCategoryAsync()
   }
-
-  componentDidMount(){
-    this.getCategoryList()
-  }
-
   render() {
     //表格的数据源
     const dataSource = this.props.categorylist
