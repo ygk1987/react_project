@@ -1,17 +1,25 @@
 import React, { Component } from 'react'
 import { Card,Button,Table } from 'antd';
 import {PlusCircleOutlined} from '@ant-design/icons';
-import {reqCategoryList} from '@/api'
-export default class Category extends Component {
-  state = {
-    categoryList: []
-  }
+import {connect} from 'react-redux'
 
+import {reqCategoryList} from '@/api'
+import {saveCategory} from '@/redux/actions/category'
+
+
+@connect(
+  state =>({categorylist: state.categorylist}), //映射操作状态
+  {saveCategory} //映射操作状态的方法
+)
+class Category extends Component {
   getCategoryList = async ()=>{
     let result = await reqCategoryList()
     const {status, data} = result
     if(status === 0){
-      this.setState({categoryList: data})
+      //this.setState({categoryList: data})
+
+      //如果成功存入redux中数据共享
+      this.props.saveCategory(data)
     }
   }
 
@@ -21,7 +29,7 @@ export default class Category extends Component {
 
   render() {
     //表格的数据源
-    const dataSource = this.state.categoryList
+    const dataSource = this.props.categorylist
     //表格的列配置(特别重要)
     const columns = [
       {
@@ -54,5 +62,6 @@ export default class Category extends Component {
     )
   }
 }
+export default Category
 
 
