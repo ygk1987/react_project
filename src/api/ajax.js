@@ -12,6 +12,8 @@ import qs from 'querystring' //将对象转换为urlencoded格式
 import nprogress from 'nprogress' //引入nprogress制作进度条
 import 'nprogress/nprogress.css'
 import store from '@/redux/store'
+import {deleteUserInfo} from '@/redux/actions/login'
+import { saveTitle } from '@/redux/actions/title'
 
 //配置请求的基础路径,React脚手架中可以为空,请求时自动看服务器当前所在的url地址
 axios.defaults.baseURL = '/api'
@@ -48,7 +50,14 @@ axios.interceptors.response.use(
     //注意,要给默认值,统一响应已知错误类型外的错误提示
     let errmsg = '未知错误,请联系管理员'
     const {message} = err
-    if(message.indexOf('401') !== -1) errmsg = '未登录或身份过期，请重新登录！'
+    if(message.indexOf('401') !== -1){
+      //强制退出,直接打回Login
+      //联系Redux删除所有用户数据
+      store.dispatch(deleteUserInfo())
+      store.dispatch(saveTitle(''))
+      errmsg = '未登录或身份过期，请重新登录！'
+    } 
+    
     else if(message.indexOf('Network Error') !== -1) errmsg = '网络不通，请检查网络连接！'
     else if(message.indexOf('timeout')) errmsg = '网络不稳定，连接超时！';
     msg.error(errmsg, 1) //参数:errmsg错误哦信息,1表示1后提示框消失
