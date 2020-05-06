@@ -40,8 +40,8 @@ class LeftNav extends Component {
 
   render() {
     const {pathname} = this.props.location
-    const checkedKey = pathname.split('/').slice(-1)
-    console.log(checkedKey);
+    const openedKey = pathname.split('/')
+    const checkedKey = openedKey.slice(-1)
     
     return (
       <div className="left-nav">
@@ -52,7 +52,7 @@ class LeftNav extends Component {
           {/* antd的Menu组件 */}
           <Menu
             selectedKeys={checkedKey} //默认选中哪个菜单
-            defaultOpenKeys={[]} //默认展开哪个菜单
+            defaultOpenKeys={openedKey} //默认展开哪个菜单
             mode="inline" //菜单的模式
             theme="dark" //主题颜色
           >
