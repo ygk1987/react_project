@@ -78,3 +78,34 @@
     2.Promise处理异步任务
     3.定义函数或者使用IIFE 避免在生命周期钩子函数前使用async关键字
 ```
+## day07-做了什么?
+```shell
+1.点击左侧导航,实现跳转(注意文字变为主题颜色的处理,使用Link同时让图标作为菜单文字的一部分,颜色是antd的Menu控制,所以不用Navlink)
+2.刷新页面自动选择菜单、自动展开菜单
+    1.使用withRouter高阶组件,可以将普通的组件转成路由组件
+    2.根据Antd菜单的属性,配合使用数组split/slice/forEach/find方法完成
+    3.处理后的路径数组中元素较少,所有可以不用再次掐头去尾的精确匹配,antd底层自动匹配
+3.登录后不自动选中首页的问题
+    第一个解决办法：登录成功之后，不跳转/admin，直接跳转:/admin/home
+    第二个解决办法：用selectedKeys 去代替 defaultSelectedKeys (推荐),因为defaultSelectedKeys默认只能选中一次
+4.LeftNav组件、Header组件与redux的交互---实现头部标题的动态展示
+  注:设计的路径结构要能够反映出菜单的层级,且最后一个关键字对应的就是当前的组件
+5.处理刷新页面头部title丢失的问题---使用路径去计算title
+    1.从路径中获取菜单的key
+    2.拿着key去menu-config中查找其所对应的菜单名字
+    3.直接保存到redux中
+    4.点击回调携带参数的处理,`{()=>{this.saveTitle(menuObj.title)}}`
+6.处理登录后头部"首页"丢失的问题---加上了判断，若路径是admin，直接改为home
+  `if(currentKey === 'admin') currentKey = 'home'`
+7.商品分类组件--静态，用到antd的Card组件、Table组件
+    注意点:  1.表格最重要的就是列头和数据
+            2.配置唯一标识`rowKey="_id"`,必须是key不能更改
+            3.使用render用于高级渲染，返回值展示到页面
+            `render:() => <Button type="link">修改分类</Button>`
+8.商品分类组件--初始化数据展示
+  1.非redux版(状态维护在组件自身内部,异步任务也在该组件内部处理)
+  2.同步action版(状态维护到redux中共享,但异步任务在该组件内部处理)
+  3.异步action版(状态维护到redux中共享,异步任务在对应的action中处理)
+9.商品分类组件--新增弹窗
+  用到antd的Form/Input组件和声明式校验
+```
