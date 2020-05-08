@@ -109,3 +109,32 @@
 9.商品分类组件--新增弹窗
   用到antd的Form/Input组件和声明式校验
 ```
+## day08-做了什么?
+```shell
+1.完成新增分类
+    (1).如何在不触发表单的提交且获得表单的数据(借助表单实例的API),
+      getFieldsValue	获取一组字段名对应的值，会按照对应结构返回
+    (2).如何重置来一个antd里的表单
+      setFieldsValue	设置表单的值,第一次靠initialValues
+    (3).如果脱离了表单的提交回调去获取数据，获取数据之后要再次校验
+2.完成修改分类
+    (1).如何在点击修改分类按钮时，获取当前分类的信息(_id,name)?
+      dataIndex和render的配合,dataIndex会作为render回调函数参数,但render回调不传参默认获取所有参数
+    (2).表单的数据回显(繁琐)
+      (2.1).不要直接给Form表单中的Input组件直接设置默认值。
+      (2.2).借助Form组件的initialValues去设置Form中输入项的默认值。只有初始化以及重置时生效(注意是表单组件的属性)
+      (2.3).initialValues两个时候生效：(1).表单初始化，即：第一弹窗 (2).表单重置的时候。
+      (2.4).最终借助表单实例的setFieldsValue实现设置表单默认值。
+    (3)并不一定所有的东西都要维护进状态，有时可以挂到this上(组件的实例身上)。
+    (4)复用展示弹窗和确认回调(定义一个标识isUpdate来区分)
+3.完成商品管理
+    (1)rowKey="_id" //指定唯一值对应项
+    (2)Select组件的onChange事件的回调参数就是值`{value => this.setState({searchType:value})}`,但Input组件的onChange事件的回调参数还是event`{event => this.setState({keyWord:event.target.value})}`
+    (3)Tabel组件中分页器的属性
+        current,当前是第几页
+        onChange,页码改变的回调函数只能有一个
+    (4)所以必须要求复用回调函数完成请求商品和搜索商品的业务逻辑
+        isSearch,标识当前动作为搜索,用于区分请求商品和搜索商品的动作
+    (5)搜索请求商品参数二选一的设计
+        给二选一参数设置一个公有的变量,将这公有的变量作为搜索属性,keyWord的作为公有变量属性值即可`[searchType]:keyWord`,对比对象的多层解构理解
+```
