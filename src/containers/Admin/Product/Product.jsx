@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Card,Button,Select,Input,Table,message } from 'antd';
 import {PlusCircleOutlined,SearchOutlined} from '@ant-design/icons';
-import {reqProductList, reqSerachProduct} from '@/api'
+import {reqProductList, reqSerachProduct,reqUpdateProductStatus} from '@/api'
 import {PAGE_SIZE} from '@/config'
 const { Option } = Select;
 export default class Product extends Component {
@@ -10,12 +10,31 @@ export default class Product extends Component {
     total:0, //数据总数
     pageNum:0,//当前是第几页
     searchType:'productName',//搜索方式(默认值是按名称搜)
-    keyWord:''//搜索的关键字
+    keyWord:'',//搜索的关键字
+    isLoading:false //是否处于加载中
+  }
+
+  //控制商品上架、上架
+  changStatus = async(_id, currentStatus)=>{
+    //更新状态
+    if(currentStatus === 1) currentStatus = 2;
+    else currentStatus = 1;
+    //请求更新
+    let result = await reqUpdateProductStatus(_id,currentStatus)
+    const {status,msg} = result
+    if(status === 0){
+      message.success(currentStatus === 1?'上架成功':'下架成功')
+      //重新请求数据
+      this.getProductList(this.state.pageNum)
+    }else{
+      message.error(msg)
+    }
   }
 
   getProductList = async (pageNum=1)=>{
     //根据页码请求商品列表
     let result
+    this.setState({isLoading:true})
     if(this.isSearch){
       //如果是搜索
       const {searchType,keyWord} = this.state
@@ -27,7 +46,7 @@ export default class Product extends Component {
     const {status, data, msg} = result
     if(status === 0){
       const {list,total,pageNum} = data
-      this.setState({productList:list,total,pageNum})
+      this.setState({productList:list,total,pageNum,isLoading:false})
     }else{
       message.error(msg)
     }
@@ -60,13 +79,14 @@ export default class Product extends Component {
       },
       {
         title: '状态',
-        dataIndex: 'status',
+        //dataIndex: 'status',
         key: 'status',
         align:'center',
-        render:(status)=>{
+        render:(productObj)=>{
+          const {_id,status} = productObj
           return(
             <div>
-              <Button type={status === 1 ? 'danger' : 'primary'}>
+              <Button onClick={()=>{this.changStatus(_id,status)}} type={status === 1 ? 'danger' : 'primary'}>
                 {status === 1 ? '下架' : '上架'}
               </Button><br/>
               <span>{status === 1 ? '在售' : '售罄'}</span>
@@ -120,7 +140,8 @@ export default class Product extends Component {
           }
         >
           <Table 
-            dataSource={dataSource} 
+            loading = {this.state.isLoading}
+            dataSource={dataSource} //表格的数据源
             columns={columns} 
             bordered
             rowKey="_id"
