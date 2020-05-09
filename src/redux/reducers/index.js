@@ -11,5 +11,5 @@ import categoryReducer from './category'
 export default combineReducers({
   userInfo: loginReducer,
   title: titleReducer,
-  categorylist: categoryReducer
+  categoryList: categoryReducer
 })
