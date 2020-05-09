@@ -96,13 +96,21 @@ export default class Product extends Component {
       },
       {
         title: '操作',
-        //dataIndex: 'action',
+        dataIndex: '_id',
         key: 'action',
         align:'center',
-        render:()=>(
+        render:(id)=>(
           <div>
-            <Button type="link">详情</Button><br/>
-            <Button type="link">修改</Button>
+            <Button 
+              onClick={()=>{this.props.history.push(`/admin/prod_about/product/detail/${id}`)}}
+              type="link"
+            >详情
+            </Button><br/>
+            <Button 
+              onClick={()=>{this.props.history.push(`/admin/prod_about/product/update/${id}`)}}
+              type="link"
+            >修改
+            </Button>
           </div>
         )
       },
@@ -134,7 +142,10 @@ export default class Product extends Component {
           </div>
         } 
           extra={
-            <Button type="primary">
+            <Button 
+            onClick={()=>{this.props.history.push('/admin/prod_about/product/add')}}
+              type="primary"
+            >
               <PlusCircleOutlined/>添加商品
             </Button>
           }
