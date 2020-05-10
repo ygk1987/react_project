@@ -193,5 +193,5 @@
     onChange={this.handleChange} //图片状态改变的回调
   3.注意图片真正上传完成的两个状态
     file.status === 'done',表示Antd组件上传加载完成
-    response中status === 0,才表示图片上传服务完成
+    response中status === 0,才表示图片上传服务器完成
 ```
