@@ -138,3 +138,60 @@
     (5)搜索请求商品参数二选一的设计
         给二选一参数设置一个公有的变量,将这公有的变量作为搜索属性,keyWord的作为公有变量属性值即可`[searchType]:keyWord`,对比对象的多层解构理解
 ```
+## day09-做了什么?
+```shell
+1.商品上架、下架处理
+    1.根据商品的id和当前的状态发送更新商品是否上架、下架请求
+    2.成功响应后重新请求商品列表的数据
+2.loading的效果
+    自身状态中维护一个isLoading:false 是否处于加载中的标识
+3.搭建product的子路和路由携带参数
+    1.params参数：/admin/product/detail/43w5e6r789
+    2.location.search参数/admin/product/detail?43w5e6r789
+    3.Link和NavLink中 to的取值：1.字符串(用的多)  2.配置对象
+    注意：字符串的to，会经过react-router-dom的加工，变成一个配置对象
+4.实现新增、修改、详情组件的路由跳转(处理刷新页面选中和标题丢失的问题)
+    1.在左侧导航组件中判断路径是否包含`product`标题名称
+      `if(pathname.indexOf('product')) currentKey = 'product'`
+    2.在左侧导航组件中判断路径是否包含`['product']`要选中的菜单
+      `if(openedKey.indexOf('product') !== -1) checkedKey = ['product']`
+5.商品详情静态组件及动态交互
+    1.注意在react中innerHtml的替代方案是：dangerouslySetInnerHTML={{__html:detail}}
+    2.根据路由组件携带match.params中获取传递过来的id
+    3.发送请求查询id所对应商品
+    4.尝试从redux中获取categoryList，若有则用，若无则请求
+6.添加商品静态组件
+    1.Form组件的initialValues去设置Form中输入项的默认值。只有初始化以及重置时生效(注意是表单组件的属性)
+    2.Button组件提交的属性是`htmlType="submit"`
+    3.Item组件的label属性是控制Input输入框前的文字
+7.文件上传的两种模式
+    第一种模型:
+      1.客户端请求,表单的基本数据 + 图片
+      2.服务器：
+          1.储存基本数据到数据库
+          2.给图片重命名
+          3.储存图片
+          4.将基本数据和图片做关联
+      3.服务器响应：操作结果
+    第二种模型:
+      1.客户端选择完图片，立即触发上传
+      2.服务器：
+          1.给图片重命名，随后保存图片
+          2.服务返回：
+            (1).图片重命名后的名字
+            (2).一个查看该图片的地址
+      3.客户端请求,表单基本数据 +图片在服务器中的名字 
+      4.服务器响应：操作结果
+8.上传文件
+  1.坑:antd照片墙组件监视图片状态发生改变的回调两参数:file和fileList
+    file表示当前上传的文件,只能读
+    fileList表示所有上传的图片数组列表,既能读取也能写
+  2.Upload组件的重要属性：
+    action="/api/manage/img/upload" //上传服务的地址
+    name="image" //文件参数名
+    fileList={fileList}  //上传文件列表
+    onChange={this.handleChange} //图片状态改变的回调
+  3.注意图片真正上传完成的两个状态
+    file.status === 'done',表示Antd组件上传加载完成
+    response中status === 0,才表示图片上传服务完成
+```
