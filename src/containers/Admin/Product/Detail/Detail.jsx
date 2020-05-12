@@ -16,7 +16,8 @@ const {Item} = List
 )
 class Detail extends Component {
   state = {
-    currentProduct:{imgs:[]} //当前商品信息
+    currentProduct:{imgs:[]}, //当前商品信息
+    isLoading: true //标识是否处于加载中
   }
 
   //根据商品分类id查找分类名称
@@ -24,7 +25,7 @@ class Detail extends Component {
     let result = await reqProductInfoById(id);
     const { status, data, msg} = result
     if(status === 0){
-      this.setState({currentProduct:data})
+      this.setState({currentProduct:data,isLoading:false})
     }else{
       message.error(msg)
     }
@@ -54,6 +55,7 @@ class Detail extends Component {
     const {name,desc,price,categoryId,imgs,detail} = this.state.currentProduct
     return (
       <Card
+        loading = {this.state.isLoading}
         title={
           <div>
             <Button

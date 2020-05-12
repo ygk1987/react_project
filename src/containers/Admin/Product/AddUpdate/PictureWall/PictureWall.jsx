@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import {reqDeletePicture} from '@/api'
+import {IMAGE_BASE_URL} from '@/config'
 
 //将图片转为base64(如果图片上传失败了，为了保证用户体验，将图片转为base64编码，用于页面展示)
 function getBase64(file) {
@@ -21,14 +22,37 @@ export default class PicturesWall extends Component {
     previewTitle: '', //预览窗图片的标题
     //fileList中是所有上传过的文件
     fileList: [
-      /*{
-         uid: '-1', //必备属性，底层读取后作为react中的key去使用
+      /* {
+        uid: '-1', //必备属性，底层读取后作为react中的key去使用
         name: 'image.png', //图片名
         status: 'done',//图片状态，有：uploading done error removed种
         url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',//图片地址
-      },*/
+      }, */
     ],
   };
+
+  //
+  setFileListByImgNameArr = (nameArr)=>{
+    let fileList = []
+    nameArr.forEach((imgName,index)=>{
+      fileList.push({
+        uid: -index,
+        name: imgName,
+        status: 'done',
+        url:IMAGE_BASE_URL+imgName
+      })
+    })
+    this.setState({fileList})
+  }
+  
+  //获取所有上传完毕的图片名字(服务器返回的新名字)
+  getImgNameArr = ()=>{
+    let arr = []
+    this.state.fileList.forEach((imgObj)=>{
+      arr.push(imgObj.name)
+    })
+    return arr
+  }
 
   //预览窗关闭按钮的回调（程序员无需修改）
   handleCancel = () => this.setState({ previewVisible: false });

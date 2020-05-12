@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import {Card,Button,Form, Input, Select} from 'antd'
+import {Card,Button,Form, Input, Select,message} from 'antd'
 import {connect} from 'react-redux'
 import {saveCategoryAsync} from '@/redux/actions/category'
 import {ArrowLeftOutlined} from '@ant-design/icons';
+import {reqAddProduct,reqProductInfoById,reqUpdateProduct} from '@/api'
 import PictureWall from './PictureWall/PictureWall'
+import RichText from './RichText/RichText'
 
 const {Item} = Form
 const {Option} = Select
@@ -13,20 +15,71 @@ const {Option} = Select
   {saveCategoryAsync} //映射操作状态的方法
 )
 class AddUpdate extends Component {
-  onfinish = (values)=>{
-    console.log(values);
+  state = {
+    isUpdate:false,
+    isLoading:false
+  }
+
+  //根据当前修改的商品id获取对应的商品信息
+  getCurrentProduct = async(id)=>{
+    this.setState({isLoading:true})
+    //根据id查询当前商品的详细信息
+    let result = await reqProductInfoById(id)
+    //从result中获取数据
+    const {status, data,msg} = result
+    if(status === 0){
+      //从data中解构赋值商品详细属性
+      const {name,desc,price,categoryId,imgs,detail} = data
+      //更改状态,取消展示loading
+      this.setState({isLoading:false})
+      //通过Form实例的setFieldsValue回显基本数据
+      this.refs.productForm.setFieldsValue({name,desc,price,categoryId});
+      //通过PictureWall组件实例调用setFileListByImgNameArr回显图片数据
+      this.refs.pictureWall.setFileListByImgNameArr(imgs)
+      //通过RichText组件实例调用setRichText
+      this.refs.richText.setRichText(detail)
+    }else{
+      message.error(msg)
+    }
+  }
+
+  //表单提交的回调
+  onfinish = async(values)=>{
+    values.imgs = this.refs.pictureWall.getImgNameArr()
+    values.detail = this.refs.richText.getRichText()
+    //判断是添加还是更新
+    let result
+    if(this.state.isUpdate){
+      values._id = this._id
+      result = await reqUpdateProduct(values)
+    }else{
+      result = await reqAddProduct(values)
+    }
+    const {status, msg} = result
+    if(status === 0){
+      message.success(this.state.isUpdate ? '修改商品成功':'添加商品成功')
+      this.props.history.replace('admin/prod_about/product')
+    } 
+    else message.error(msg)
   }
 
   componentDidMount(){
     const {categoryList,saveCategoryAsync} = this.props
-    if(categoryList.length === 0){
-      saveCategoryAsync()
-    }
+    //如果redux中没有分类数据,就去请求,随后保存
+    if(categoryList.length === 0) saveCategoryAsync()
+    //尝试获取商品的id
+    const {id} = this.props.match.params
+    if(id){
+      this._id = id
+      this.setState({isUpdate:true})
+      this.getCurrentProduct(id)
+    } 
   }
  
   render() {
     return (
       <Card 
+        loading={this.state.isLoading}
         title={
           <div>
             <Button 
@@ -35,11 +88,12 @@ class AddUpdate extends Component {
             >
               <ArrowLeftOutlined/>返回
             </Button>	
-            <span>添加商品</span>
+            <span>{this.state.isUpdate?'修改商品':'添加商品'}</span>
           </div>
         }
       >
         <Form
+          ref="productForm"
           initialValues={{categoryId:''}}
           onFinish = {this.onfinish}
         >
@@ -93,14 +147,14 @@ class AddUpdate extends Component {
             wrapperCol={{span:6}}
             style={{marginLeft:'12px'}}
           >
-            <PictureWall/>
+            <PictureWall ref="pictureWall"/>
           </Item>}
           {<Item
             label="商品详情"
-            wrapperCol={{span:6}}
+            wrapperCol={{span:14}}
             style={{marginLeft:'12px'}}
           >
-            此处放置富文本编辑器
+            <RichText ref="richText"/>
           </Item>}
           <Item>
             <Button type="primary" htmlType="submit">提交</Button>

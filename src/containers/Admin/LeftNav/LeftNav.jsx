@@ -10,40 +10,58 @@ import './css/left_nav.less'
 
 const { SubMenu,Item } = Menu;
 @connect(
-  ()=>({}), //映射状态
+  (state)=>({//映射状态
+    userMenus:state.userInfo.user.role.menus,
+    username:state.userInfo.user.username
+  }), 
   {saveTitle} //映射操作状态的方法
 )
 @withRouter
 class LeftNav extends Component {
   saveTitle = (title)=>{
-    console.log(title);
+    // console.log(title);
     this.props.saveTitle(title)
+  }
+
+  //专门用于判断当前菜单是否有权限展示。
+	//注意：一个菜单没有权限，但是他下的子菜单可能是有权限的。
+  hasAuth = (menuObj)=>{ //menuObj是菜单配置文件中的每一个菜单项
+    const {userMenus, username} = this.props; //用户应该看到的菜单key组成数组
+    if(username === 'admin') return true
+    if(!menuObj.children){
+      return userMenus.find((item)=> item === menuObj.key)
+    }else{
+      return menuObj.children.some((childItem)=>userMenus.indexOf(childItem.key) !== -1)
+    }
   }
 
   //自动生成导航菜单
   createMenu = (menuArr)=>{
     return menuArr.map((menuObj)=>{
-      if(!menuObj.children){
-        return(
-          <Item key={menuObj.key} onClick={()=>{this.saveTitle(menuObj.title)}}>
-            <Link to={menuObj.path} style={{color:'white'}}>
-              <menuObj.icon />
-              {menuObj.title}
-            </Link>
-          </Item>
-        )
-      }else{
-        return(
-          <SubMenu 
-            style={{color:'white'}}
-            key={menuObj.key} 
-            icon={<menuObj.icon />} 
-            title={menuObj.title}
-          >
-            {/* 递归调用完成子菜单遍历 */}
-            {this.createMenu(menuObj.children)}
-          </SubMenu>
-        )
+      //判断菜单是否有权限
+      if(this.hasAuth(menuObj)){
+        if(!menuObj.children){
+          return(
+            <Item key={menuObj.key} onClick={()=>{this.saveTitle(menuObj.title)}}>
+              <Link to={menuObj.path} style={{color:'white'}}>
+                <menuObj.icon />
+                {menuObj.title}
+              </Link>
+            </Item>
+          )
+        }else{
+          return(
+            <SubMenu 
+              style={{color:'white'}}
+              key={menuObj.key} 
+              icon={<menuObj.icon />} 
+              title={menuObj.title}
+            >
+              {/* 递归调用完成子菜单遍历 */}
+              {this.createMenu(menuObj.children)}
+            </SubMenu>
+          )
+        }
       }
     })
   }
@@ -55,7 +73,7 @@ class LeftNav extends Component {
     let currentKey = pathname.split('/').slice(-1)[0] //当前的key
     //解决第一次登录title计算不出来
     if(currentKey === 'admin') currentKey = 'home'
-    if(pathname.indexOf('product')) currentKey = 'product'
+    if(pathname.indexOf('product') !== -1) currentKey = 'product'
     //2.拿着key去menu-config中查找其所对应的菜单名字
     let title =''
     menus.forEach((menuObj)=>{
