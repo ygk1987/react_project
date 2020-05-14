@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数组中some方法</title>
+</head>
+<body>
+  <script type="text/javascript">
+    // const arr = [1,2,3,4,5]
+    const arr = [{name:'lisi',age:18},{name:'zhangshan',age:19},{name:'qwe',age:20}]
+    /* function demo(a) {
+      return a.age > 20;
+    }
+    let result = arr.some(demo) //判断一下arr数组中是否至少有一个元素通过了demo函数的检测 */
+    
+    /* let result = arr.some((item)=>{//判断一下arr数组中是否至少有一个元素通过了demo函数的检测
+      return item.age > 18
+    }) */
+
+    let result = arr.some(item => item.age > 20)
+    console.log(result);
+    
+  </script>
+</body>
+</html>

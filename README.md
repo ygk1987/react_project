@@ -195,3 +195,27 @@
     file.status === 'done',表示Antd组件上传加载完成
     response中status === 0,才表示图片上传服务器完成
 ```
+### day10-做了什么?
+```shell
+1.富文本编辑器(wysiwyg)
+  执行命令：yarn add react-draft-wysiwyg draft-js draftjs-to-html html-to-draftjs
+2.富文本编辑器代码分析,获取富文本内容
+3.完成添加商品
+4.修改商品--基本数据回显
+5.角色管理组件--静态
+  Tree树形控件部分API
+    treeData={treeArr} //树形结构的数据源
+    checkable //菜单可勾选
+    onCheck={this.handleCheck} //勾选某个菜单的回调
+    checkedKeys={this.state.checkedKeys} //选中哪个
+    defaultExpandAll={true}//默认展开所有树节点
+6.角色管理组件--初始化数据
+7.角色管理组件--新增角色
+8.用户管理组件--初始化用户数据
+9.用户管理组件--新增用户
+10.LeftNav组件中根据权限生成菜单
+  1.注意：一个菜单没有权限，但是他下的子菜单可能是有权限的。
+  2.逻辑: 根据所有菜单(menuObj)和当前用户能看到哪些菜单(userMenus)
+    将menuObj是菜单配置文件中的每一个菜单项,在用户应该看到的菜单key组成数组查找,如果能查找怎该用户就有查看对应菜单的权限
+11.echarts的使用
+```

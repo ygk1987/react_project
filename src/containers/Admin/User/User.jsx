@@ -57,8 +57,7 @@ export default class User extends Component {
 		let result = this.state.roles.find((roleObj)=>{
 			return roleObj._id === id
 		})
-		console.log(result);
-		
+		// console.log(result);
 		if(result) return result.name
 	}
 	
